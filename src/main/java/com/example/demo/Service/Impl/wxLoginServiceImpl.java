@@ -12,14 +12,16 @@ public class wxLoginServiceImpl implements wxLoginService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Override
-    public void Login(String name) {
+    public Object  Login(String name) {
         String sqlName = "select userid from user where openid =?";
-        List id = jdbcTemplate.queryForList(sqlName,name);
+        List<Map<String,Object>> id = jdbcTemplate.queryForList(sqlName,name);
+        System.out.println(id.get(0).get("userid")+"id*****");
         if(id.size()==0){
             String sql1 = "insert into user(openID,intervalDay,sustainDay)values(?,?,?)";
             System.out.println("name"+name);
             jdbcTemplate.update(sql1,name,0,0);
         }
+        return id.get(0).get("userid");
     }
 
     @Override
@@ -35,6 +37,13 @@ public class wxLoginServiceImpl implements wxLoginService {
             System.out.println("用户登陆过");
              return true;//用户登陆过
              }
+    }
+
+    @Override
+    public int getUserID(String openID) {
+        String sqlGetID = "select userid from user where openid =? ";
+      //  int userID = jdbcTemplate.queryForList(sqlGetID,int.class,openID);
+        return 0;
     }
 
 

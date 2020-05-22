@@ -30,13 +30,14 @@ public class wxLoginController {
         JSONObject jsonObject1 =JSONObject.fromObject(sr);
         Object openid = jsonObject1.get("openid");
         System.out.println(String.valueOf(openid)+"是否为空");
-        wxLoginService.Login(String.valueOf(openid));//没有重复的openID才进行插入
-        model.addAttribute(openid);
-        return openid;
+        Object userid =wxLoginService.Login(String.valueOf(openid));//没有重复的openID才进行插入
+        Object []ID ={userid,openid};
+        model.addAttribute(ID);
+        return ID;
     }
 
     @RequestMapping("/reLogin")
-    public int reLogin(@RequestParam(value = "openid") String openID) {
+    public int reLogin(@RequestParam(value = "openid") String openID,@RequestParam(value = "userid") String userID) {
         System.out.println(openID+"openid");
         if (wxLoginService.reLogin(openID)){
             System.out.println(1+"进来了");
